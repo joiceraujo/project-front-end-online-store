@@ -47,7 +47,7 @@ Ao iniciar este projeto, você concorda com as diretrizes do Código de Conduta 
   
   * Este projeto é em grupo;
   * São `4` dias de projeto;
-  * Data para entrega final do projeto: `19/07/2022 14:10`.
+  * Data para entrega final do projeto: `19/07/2022 14:00`.
 
 </details>
 
