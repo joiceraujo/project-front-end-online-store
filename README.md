@@ -299,7 +299,7 @@ Você verá que os requisitos do projeto têm, além das observações técnicas
 
   - **Requisitos 1 e 2:** Prioridade 0 (Devem ser feitos PRIMEIRO);
   - **Requisitos 3 a 5:** Prioridade 1 (Devem ser feitos APÓS OS REQUISITO 1 E 2, mas podem ser feitos em paralelo);
-  - **Requisitos 5 a 7:** Prioridade 2 (Devem ser feitos APÓS OS REQUISITO 3 A 5, mas podem ser feitos em paralelo);
+  - **Requisitos 6 a 7:** Prioridade 2 (Devem ser feitos APÓS OS REQUISITO 3 A 5, mas podem ser feitos em paralelo);
   - Assim por diante.
 
   Se você não seguir a ordem de prioridades terá mais **conflitos de merge** e **demandas concorrentes**, em que o avanço de uma depende, necessariamente, do avanço de outra.
