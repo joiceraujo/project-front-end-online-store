@@ -10,9 +10,10 @@ class Home extends Component {
     this.searchProducts = this.searchProducts.bind(this);
     this.renderResults = this.renderResults.bind(this);
     this.renderCategories = this.renderCategories.bind(this);
+    this.setCategoryFilter = this.setCategoryFilter.bind(this);
 
     this.state = {
-      list: undefined,
+      productsList: undefined,
       categoriesList: undefined,
     };
   }
@@ -20,6 +21,11 @@ class Home extends Component {
   async componentDidMount() {
     const categorias = await getCategories();
     this.setState({ categoriesList: categorias });
+  }
+
+  async setCategoryFilter({ target }) {
+    const response = await getProductsFromCategoryAndQuery(target.value, undefined);
+    this.setState({ productsList: response.results });
   }
 
   clickFunction = () => {
@@ -43,15 +49,15 @@ class Home extends Component {
   async searchProducts({ target }) {
     const searchFilter = target.parentElement.firstChild.value;
     const response = await getProductsFromCategoryAndQuery(searchFilter, searchFilter);
-    this.setState({ list: response.results });
+    this.setState({ productsList: response.results });
   }
 
   renderResults() {
-    const { list } = this.state;
-    if (list.length === 0) return <p>Nenhum produto foi encontrado</p>;
+    const { productsList } = this.state;
+    if (productsList.length === 0) return <p>Nenhum produto foi encontrado</p>;
     return (
       <div>
-        {list.map((item) => (
+        {productsList.map((item) => (
           <div key={ item.id } data-testid="product">
             <p>{item.title}</p>
             <img src={ item.thumbnail } alt="Product" />
@@ -72,7 +78,13 @@ class Home extends Component {
       categoriesList.map((category) => (
         <li key={ category.id }>
           <label htmlFor={ category.id } data-testid="category">
-            <input id={ category.id } name="category" type="radio" />
+            <input
+              id={ category.id }
+              name="category"
+              type="radio"
+              value={ category.name }
+              onChange={ this.setCategoryFilter }
+            />
             {category.name}
           </label>
         </li>
@@ -81,7 +93,7 @@ class Home extends Component {
   }
 
   render() {
-    const { list, categoriesList } = this.state;
+    const { productsList, categoriesList } = this.state;
     return (
       <div>
         <input
@@ -94,7 +106,7 @@ class Home extends Component {
         >
           Pesquisar
         </button>
-        {list ? this.renderResults() : this.emptyListMessage() }
+        {productsList ? this.renderResults() : this.emptyListMessage() }
         <ul>
           {categoriesList && this.renderCategories()}
         </ul>
