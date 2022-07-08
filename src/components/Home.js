@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
+import Button from './Button';
 
 class Home extends Component {
   constructor() {
@@ -7,10 +9,11 @@ class Home extends Component {
 
     this.searchProducts = this.searchProducts.bind(this);
     this.renderResults = this.renderResults.bind(this);
+    this.renderCategories = this.renderCategories.bind(this);
 
     this.state = {
       list: undefined,
-      categoriesList: [],
+      categoriesList: undefined,
     };
   }
 
@@ -19,13 +22,21 @@ class Home extends Component {
     this.setState({ categoriesList: categorias });
   }
 
+  clickFunction = () => {
+    const { history } = this.props;
+    history.push('/shopcart');
+  }
+
   emptyListMessage() {
     return (
-      <p
-        data-testid="home-initial-message"
-      >
-        Digite algum termo de pesquisa ou escolha uma categoria.
-      </p>
+      <>
+        <p
+          data-testid="home-initial-message"
+        >
+          Digite algum termo de pesquisa ou escolha uma categoria.
+        </p>
+        <Button clickFunction={ this.clickFunction } buttonText="Shopping Cart" />
+      </>
     );
   }
 
@@ -55,6 +66,20 @@ class Home extends Component {
     );
   }
 
+  renderCategories() {
+    const { categoriesList } = this.state;
+    return (
+      categoriesList.map((category) => (
+        <li key={ category.id }>
+          <label htmlFor={ category.id } data-testid="category">
+            <input id={ category.id } name="category" type="radio" />
+            {category.name}
+          </label>
+        </li>
+      ))
+    );
+  }
+
   render() {
     const { list, categoriesList } = this.state;
     return (
@@ -71,17 +96,15 @@ class Home extends Component {
         </button>
         {list ? this.renderResults() : this.emptyListMessage() }
         <ul>
-          {categoriesList.map((category, index) => (
-            <li key={ index }>
-              <label htmlFor="category" data-testid="category">
-                <input id="category" type="radio" />
-              </label>
-            </li>
-          ))}
+          {categoriesList && this.renderCategories()}
         </ul>
       </div>
     );
   }
 }
+
+Home.propTypes = {
+  history: PropTypes.objectOf,
+}.isRequired;
 
 export default Home;
