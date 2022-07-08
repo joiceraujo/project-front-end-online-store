@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getProductsFromCategoryAndQuery } from '../services/api';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 
 class Home extends Component {
   constructor() {
@@ -10,7 +10,13 @@ class Home extends Component {
 
     this.state = {
       list: undefined,
+      categoriesList: [],
     };
+  }
+
+  async componentDidMount() {
+    const categorias = await getCategories();
+    this.setState({ categoriesList: categorias });
   }
 
   emptyListMessage() {
@@ -27,7 +33,6 @@ class Home extends Component {
     const searchFilter = target.parentElement.firstChild.value;
     const response = await getProductsFromCategoryAndQuery(searchFilter, searchFilter);
     this.setState({ list: response.results });
-    console.log(response.results);
   }
 
   renderResults() {
@@ -51,7 +56,7 @@ class Home extends Component {
   }
 
   render() {
-    const { list } = this.state;
+    const { list, categoriesList } = this.state;
     return (
       <div>
         <input
@@ -65,6 +70,15 @@ class Home extends Component {
           Pesquisar
         </button>
         {list ? this.renderResults() : this.emptyListMessage() }
+        <ul>
+          {categoriesList.map((category, index) => (
+            <li key={ index }>
+              <label htmlFor="category" data-testid="category">
+                <input id="category" type="radio" />
+              </label>
+            </li>
+          ))}
+        </ul>
       </div>
     );
   }
