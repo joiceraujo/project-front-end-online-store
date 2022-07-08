@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 import Button from './Button';
 
@@ -66,6 +67,12 @@ class Home extends Component {
               {' '}
               reais
             </p>
+            <Link
+              to={ `/${item.id}` }
+              data-testid="product-detail-link"
+            >
+              Mais Informações
+            </Link>
           </div>
         ))}
       </div>
