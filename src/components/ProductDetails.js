@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { clickFunction } from './Home/clickFunction';
 
 class ProductDetails extends Component {
   constructor() {
@@ -32,15 +33,28 @@ class ProductDetails extends Component {
         <img src={ productInfo.thumbnail } alt={ productInfo.name } />
       </div>
     );
-  };
+  }
 
   render() {
-    return this.renderProductDetails();
+    const { clickFunction, renderProductDetails } = this.props;
+
+    renderProductDetails();
+    return (
+      <label>
+        <button
+          data-testid="product-detail-add-to-cart"
+          onClick={ clickFunction }
+          type="submit"
+        />
+      </label>
+    );
   }
 }
 
 ProductDetails.propTypes = {
-  match: PropTypes.objectOf.isRequired,
-};
+  match: PropTypes.objectOf,
+  clickFunction: PropTypes.func,
+  renderProductDetails: PropTypes.func,
+}.isRequired;
 
 export default ProductDetails;
